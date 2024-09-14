@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Dashboard</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #495057;
+        }
+
+        /* Top Bar */
+        .topbar {
+            background-color: #007bff;
+            color: #fff;
+            width: 100%;
+            padding: 15px;
+            text-align: right;
+        }
+
+        .topbar .profile {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <ul id="role-specific-menu">
+            <!-- Role-based menu will be dynamically added here -->
+        </ul>
+        <div class="footer">
+            <ul>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <span class="profile">Welcome, User</span>
+        </div>
+
+        <!-- Dynamic Dashboard Content -->
+        <div id="dashboard-content">
+            <!-- Dashboard content will load here based on the role -->
+        </div>
+        
+    </div>
+
+    <script>
+        // Sample role from backend (you can fetch this from your Flask app)
+        const userRole = "parent"; // Change this to "teacher", "admin", "parent", etc. based on the role
+
+        // Sidebar Menus
+        const studentMenu = `
+            <li><a href="#" onclick="loadDashboardContent('progress')">Course Progress</a></li>
+            <li><a href="#" onclick="loadDashboardContent('scholarships')">Scholarships</a></li>
+            <li><a href="#" onclick="loadDashboardContent('resources')">Learning Resources</a></li>
+            <li><a href="#" onclick="loadDashboardContent('flexible-schooling-student')">Flexible Schooling</a></li>
+        `;
+
+        const teacherMenu = `
+            <li><a href="#" onclick="loadDashboardContent('assignments')">Assignments</a></li>
+            <li><a href="#" onclick="loadDashboardContent('upload')">Upload Resources</a></li>
+            <li><a href="#" onclick="loadDashboardContent('student-analytics')">Student Analytics</a></li>
+            <li><a href="#" onclick="loadDashboardContent('flexible-schooling-teacher')">Manage Flexible Schooling</a></li>
+        `;
+
+        const adminMenu = `
+            <li><a href="#" onclick="loadDashboardContent('user-management')">User Management</a></li>
+            <li><a href="#" onclick="loadDashboardContent('reports')">Reports & Analytics</a></li>
+            <li><a href="#" onclick="loadDashboardContent('system-settings')">System Settings</a></li>
+            <li><a href="#" onclick="loadDashboardContent('flexible-schooling-admin')">Admin Flexible Schooling</a></li>
+        `;
+
+        const parentMenu = `
+            <li><a href="#" onclick="loadDashboardContent('child-progress')">Child's Progress</a></li>
+            <li><a href="#" onclick="loadDashboardContent('communication')">Communicate with Teachers</a></li>
+            <li><a href="#" onclick="loadDashboardContent('resources')">Educational Resources</a></li>
+            <li><a href="#" onclick="loadDashboardContent('events')">Events & Notifications</a></li>
+            <li><a href="#" onclick="loadDashboardContent('alerts')">Alerts & Reminders</a></li>
+        `;
+
+        // Set the sidebar menu based on user role
+        const menuContainer = document.getElementById('role-specific-menu');
+        if (userRole === "student") {
+            menuContainer.innerHTML = studentMenu;
+        } else if (userRole === "teacher") {
+            menuContainer.innerHTML = teacherMenu;
+        } else if (userRole === "admin") {
+            menuContainer.innerHTML = adminMenu;
+        } else if (userRole === "parent") {
+            menuContainer.innerHTML = parentMenu;
+        }
+
+        // Load Dashboard Content based on the selected option
+        function loadDashboardContent(contentType) {
+            const dashboardContent = document.getElementById('dashboard-content');
+            let contentHTML = '';
+
+            switch (contentType) {
+                case 'progress':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Course Progress</h3>
+                            <p>View your ongoing courses and their completion status.</p>
+                        </div>
+                    `;
+                    break;
+                case 'scholarships':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Scholarships</h3>
+                            <p>View personalized scholarship suggestions based on your profile.</p>
+                        </div>
+                    `;
+                    break;
+                case 'resources':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Learning Resources</h3>
+                            <p>Access video lectures, notes, and other learning materials.</p>
+                        </div>
+                    `;
+                    break;
+                case 'assignments':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Assignments</h3>
+                            <p>Manage student submissions and grade their assignments.</p>
+                        </div>
+                    `;
+                    break;
+                case 'upload':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Upload Resources</h3>
+                            <p>Upload new study materials, notes, or video lectures for students.</p>
+                        </div>
+                    `;
+                    break;
+                case 'student-analytics':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Student Analytics</h3>
+                            <p>View student performance and identify at-risk students.</p>
+                        </div>
+                    `;
+                    break;
+                case 'user-management':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>User Management</h3>
+                            <p>Manage all users in the system, including students and teachers.</p>
+                        </div>
+                    `;
+                    break;
+                case 'reports':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Reports & Analytics</h3>
+                            <p>View system-wide analytics and generate reports on student retention.</p>
+                        </div>
+                    `;
+                    break;
+                case 'system-settings':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>System Settings</h3>
+                            <p>Manage platform-wide settings and configurations.</p>
+                        </div>
+                    `;
+                    break;
+                // New Flexible Schooling Sections
+                case 'flexible-schooling-student':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Flexible Schooling</h3>
+                            <p>Enroll in part-time or evening classes and track your progress.</p>
+                            <button>Enroll in Flexible Classes</button>
+                            <button>View Flexible Class Schedule</button>
+                        </div>
+                    `;
+                    break;
+                case 'flexible-schooling-teacher':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Manage Flexible Schooling</h3>
+                            <p>Update schedules and manage flexible classes for students.</p>
+                            <button>View Class Schedules</button>
+                            <button>Assign Flexible Classes</button>
+                        </div>
+                    `;
+                    break;
+                case 'flexible-schooling-admin':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Admin Flexible Schooling</h3>
+                            <p>Manage flexible schooling system-wide policies and approvals.</p>
+                            <button>Approve Flexible Schooling Requests</button>
+                            <button>Generate Reports</button>
+                        </div>
+                    `;
+                    break;
+                case 'child-progress':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Child's Progress</h3>
+                            <p>View your child's performance, grades, attendance, and overall progress in their courses.</p>
+                        </div>
+                        <div class="card">
+                            <h4>Course 1: Math</h4>
+                            <p>Grade: 85%, Attendance: 95%</p>
+                        </div>
+                        <div class="card">
+                            <h4>Course 2: Science</h4>
+                            <p>Grade: 78%, Attendance: 90%</p>
+                        </div>
+                    `;
+                    break;
+                case 'communication':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Communicate with Teachers</h3>
+                            <p>Send messages to your child's teachers or schedule a meeting.</p>
+                            <button>Send Message</button>
+                            <button>Schedule Meeting</button>
+                        </div>
+                    `;
+                    break;
+                case 'events':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Upcoming Events & Notifications</h3>
+                            <p>Stay updated on important school events and notifications.</p>
+                            <ul>
+                                <li>Parent-Teacher Meeting: October 15th</li>
+                                <li>Science Fair: November 10th</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+                case 'alerts':
+                    contentHTML = `
+                        <div class="card">
+                            <h3>Alerts & Reminders</h3>
+                            <p>Receive alerts about upcoming exams, assignments, or attendance issues.</p>
+                            <ul>
+                                <li>Exam Reminder: Math on September 20th</li>
+                                <li>Attendance Warning: Science class</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+            }
+
+            dashboardContent.innerHTML = contentHTML;
+        }
+
+        // Load the default content
+        loadDashboardContent('progress');
+    </script>
+</body>
+</html>

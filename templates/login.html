@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .input-group select {
+            background-color: #fff;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+
+        .forgot-password, .sign-up {
+            margin-top: 10px;
+            display: block;
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        .forgot-password:hover, .sign-up:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login to Your Account</h2>
+
+        <!-- User Role Selection -->
+        <div class="input-group">
+            <label for="userRole">Login as:</label>
+            <select id="userRole">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="admin">Admin</option>
+                <option value="parent">Parent</option>
+            </select>
+        </div>
+
+        <!-- Username or Email -->
+        <div class="input-group">
+            <label for="username">Username or Email:</label>
+            <input type="text" id="username" placeholder="Enter your username or email">
+        </div>
+
+        <!-- Password -->
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="Enter your password">
+        </div>
+
+        <!-- Login Button -->
+        <button class="login-button" onclick="handleLogin()">Login</button>
+
+        <!-- Forgot Password -->
+        <a class="forgot-password" href="#">Forgot your password?</a>
+
+        <!-- Sign Up Link -->
+        <a class="sign-up" href="#">Don't have an account? Sign up</a>
+    </div>
+
+    <script>
+        // Handle login based on selected role
+        function handleLogin() {
+            const role = document.getElementById('userRole').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Add your login logic here (e.g., API call to the server)
+            if (username && password) {
+                if (role === 'student') {
+                    alert('Logging in as Student...');
+                    // Redirect to student dashboard
+                    window.location.href = '/student-dashboard';
+                } else if (role === 'teacher') {
+                    alert('Logging in as Teacher...');
+                    // Redirect to teacher dashboard
+                    window.location.href = '/teacher-dashboard';
+                } else if (role === 'admin') {
+                    alert('Logging in as Admin...');
+                    // Redirect to admin dashboard
+                    window.location.href = '/admin-dashboard';
+                } else if (role === 'parent') {
+                    alert('Logging in as parent...');
+                    // Redirect to admin dashboard
+                    window.location.href = '/parent-dashboard';
+                }
+            } else {
+                alert('Please enter both username and password.');
+            }
+        }
+    </script>
+</body>
+</html>
